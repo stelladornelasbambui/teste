@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Notas - Cadastro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Estilos específicos para a tela de notas */
+        .notas-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header-notas {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .header-notas h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header-notas p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .botoes-acoes {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn-acao {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-relatorio {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+        }
+        
+        .btn-upload {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+        
+        .btn-salvar {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+        }
+        
+        .btn-editar {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+        }
+        
+        .btn-excluir {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        .btn-acao:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tabela-notas {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .tabela-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .tabela-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .tabela-body {
+            padding: 20px;
+        }
+        
+        .aluno-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s ease;
+        }
+        
+        .aluno-row:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .aluno-row:last-child {
+            border-bottom: none;
+        }
+        
+        .aluno-nome {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .nota-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .nota-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .resultado {
+            font-weight: 600;
+            text-align: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .aprovado {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .reprovado {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .btn-calcular {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-calcular:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-sair {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+        
+        .btn-sair:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .aluno-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .botoes-acoes {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-acao {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notas-container">
+        <!-- Botão de sair -->
+        <button class="btn-sair" onclick="fazerLogout()">
+            <i class="fas fa-sign-out-alt"></i> Sair
+        </button>
+        
+        <!-- Cabeçalho -->
+        <div class="header-notas">
+            <h1><i class="fas fa-chart-line"></i> Sistema de Notas</h1>
+            <p>Cadastro e acompanhamento das notas dos alunos</p>
+        </div>
+        
+        <!-- Botões de ação -->
+        <div class="botoes-acoes">
+            <button class="btn-acao btn-relatorio" onclick="mostrarMensagem('Relatório de notas')">
+                <i class="fas fa-file-alt"></i> Relatório de Notas
+            </button>
+            <button class="btn-acao btn-upload" onclick="mostrarMensagem('Upload de material')">
+                <i class="fas fa-upload"></i> Upload de Material
+            </button>
+            <button class="btn-acao btn-salvar" onclick="mostrarMensagem('Salvando...')">
+                <i class="fas fa-save"></i> Salvar
+            </button>
+            <button class="btn-acao btn-editar" onclick="mostrarMensagem('Editando...')">
+                <i class="fas fa-edit"></i> Editar
+            </button>
+            <button class="btn-acao btn-excluir" onclick="mostrarMensagem('Excluindo...')">
+                <i class="fas fa-trash"></i> Excluir
+            </button>
+        </div>
+        
+        <!-- Tabela de notas -->
+        <div class="tabela-notas">
+            <div class="tabela-header">
+                <h2><i class="fas fa-users"></i> Cadastro de Notas</h2>
+            </div>
+            <div class="tabela-body">
+                <div class="aluno-row" style="background-color: #f8f9fa; font-weight: 600; color: #667eea;">
+                    <div>Nome do Aluno</div>
+                    <div>Nota 1</div>
+                    <div>Nota 2</div>
+                    <div>Nota 3</div>
+                    <div>Média</div>
+                    <div>Resultado</div>
+                </div>
+                
+                <div class="aluno-row">
+                    <div class="aluno-nome">Ana Silva</div>
+                    <input type="number" class="nota-input" id="ana-nota1" min="0" max="100" placeholder="0-100">
+                    <input type="number" class="nota-input" id="ana-nota2" min="0" max="100" placeholder="0-100">
+                    <input type="number" class="nota-input" id="ana-nota3" min="0" max="100" placeholder="0-100">
+                    <div id="ana-media">-</div>
+                    <div id="ana-resultado">-</div>
+                </div>
+                
+                <div class="aluno-row">
+                    <div class="aluno-nome">Bruno Santos</div>
+                    <input type="number" class="nota-input" id="bruno-nota1" min="0" max="100" placeholder="0-100">
+                    <input type="number" class="nota-input" id="bruno-nota2" min="0" max="100" placeholder="0-100">
+                    <input type="number" class="nota-input" id="bruno-nota3" min="0" max="100" placeholder="0-100">
+                    <div id="bruno-media">-</div>
+                    <div id="bruno-resultado">-</div>
+                </div>
+                
+                <div class="aluno-row">
+                    <div class="aluno-nome">Carla Oliveira</div>
+                    <input type="number" class="nota-input" id="carla-nota1" min="0" max="100" placeholder="0-100">
+                    <input type="number" class="nota-input" id="carla-nota2" min="0" max="100" placeholder="0-100">
+                    <input type="number" class="nota-input" id="carla-nota3" min="0" max="100" placeholder="0-100">
+                    <div id="carla-media">-</div>
+                    <div id="carla-resultado">-</div>
+                </div>
+                
+                <div class="aluno-row">
+                    <div class="aluno-nome">Diego Costa</div>
+                    <input type="number" class="nota-input" id="diego-nota1" min="0" max="100" placeholder="0-100">
+                    <input type="number" class="nota-input" id="diego-nota2" min="0" max="100" placeholder="0-100">
+                    <input type="number" class="nota-input" id="diego-nota3" min="0" max="100" placeholder="0-100">
+                    <div id="diego-media">-</div>
+                    <div id="diego-resultado">-</div>
+                </div>
+                
+                <div class="aluno-row">
+                    <div class="aluno-nome">Elena Ferreira</div>
+                    <input type="number" class="nota-input" id="elena-nota1" min="0" max="100" placeholder="0-100">
+                    <input type="number" class="nota-input" id="elena-nota2" min="0" max="100" placeholder="0-100">
+                    <input type="number" class="nota-input" id="elena-nota3" min="0" max="100" placeholder="0-100">
+                    <div id="elena-media">-</div>
+                    <div id="elena-resultado">-</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Botão calcular -->
+        <button class="btn-calcular" onclick="calcularNotas()">
+            <i class="fas fa-calculator"></i> Calcular Resultado
+        </button>
+    </div>
+    
+    <script>
+        // Verificação de autenticação
+        function verificarAutenticacao() {
+            const userEmail = localStorage.getItem('userEmail');
+            if (!userEmail || userEmail !== 'stella.lamounier@gmail.com') {
+                alert('Acesso negado. Faça login primeiro.');
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // Função para calcular notas
+        function calcularNotas() {
+            const alunos = ['ana', 'bruno', 'carla', 'diego', 'elena'];
+            
+            alunos.forEach(aluno => {
+                const nota1 = parseFloat(document.getElementById(`${aluno}-nota1`).value) || 0;
+                const nota2 = parseFloat(document.getElementById(`${aluno}-nota2`).value) || 0;
+                const nota3 = parseFloat(document.getElementById(`${aluno}-nota3`).value) || 0;
+                
+                // Validação das notas
+                if (nota1 < 0 || nota1 > 100 || nota2 < 0 || nota2 > 100 || nota3 < 0 || nota3 > 100) {
+                    alert('As notas devem estar entre 0 e 100!');
+                    return;
+                }
+                
+                const media = ((nota1 + nota2 + nota3) / 3).toFixed(1);
+                const resultado = media >= 70 ? '✅ Aprovado' : '❌ Reprovado';
+                const classeResultado = media >= 70 ? 'aprovado' : 'reprovado';
+                
+                // Atualiza a média
+                document.getElementById(`${aluno}-media`).textContent = media;
+                
+                // Atualiza o resultado
+                const resultadoElement = document.getElementById(`${aluno}-resultado`);
+                resultadoElement.textContent = resultado;
+                resultadoElement.className = `resultado ${classeResultado}`;
+            });
+            
+            mostrarMensagem('Cálculo realizado com sucesso!', 'success');
+        }
+        
+        // Função para mostrar mensagens
+        function mostrarMensagem(mensagem, tipo = 'info') {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 1000;
+                animation: slideInRight 0.3s ease-out;
+                max-width: 300px;
+                word-wrap: break-word;
+            `;
+            
+            // Define cores baseadas no tipo
+            switch(tipo) {
+                case 'success':
+                    messageDiv.style.background = '#27ae60';
+                    break;
+                case 'error':
+                    messageDiv.style.background = '#e74c3c';
+                    break;
+                case 'info':
+                    messageDiv.style.background = '#3498db';
+                    break;
+                default:
+                    messageDiv.style.background = '#95a5a6';
+            }
+            
+            messageDiv.textContent = mensagem;
+            document.body.appendChild(messageDiv);
+            
+            // Remove automaticamente após 3 segundos
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 3000);
+        }
+        
+        // Função para fazer logout
+        function fazerLogout() {
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userRemember');
+            window.location.href = 'index.html';
+        }
+        
+        // Adiciona estilos CSS para as animações das mensagens
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Verifica autenticação ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            verificarAutenticacao();
+            console.log('Sistema de notas carregado com sucesso!');
+        });
+    </script>
+</body>
+</html>
